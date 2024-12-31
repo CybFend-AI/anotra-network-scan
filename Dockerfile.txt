@@ -1,17 +1,17 @@
-# 1. Python base image'ını kullanıyoruz
-FROM python:3.13-slim
+# Base image
+FROM python:3.9-slim
 
-# 2. Çalışma dizini oluşturuluyor
+# Set working directory
 WORKDIR /app
 
-# 3. Gereksinimler dosyasını kopyalıyoruz
-COPY requirements.txt /app/
-
-# 4. Python bağımlılıklarını yüklüyoruz
-RUN pip install --no-cache-dir -r requirements.txt
-
-# 5. Flask uygulamasını kopyalıyoruz
+# Copy application files
 COPY . /app
 
-# 6. Gunicorn ile Flask uygulamasını başlatıyoruz
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose the application port
+EXPOSE 5000
+
+# Run the application using Gunicorn
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "network-scan:app"]
