@@ -6,3 +6,6 @@ waitress-serve --port=5000 network_scan:app
 
 gunicorn baslatma kodu:
 gunicorn -w 4 -b 0.0.0.0:5000 network_scan:app
+
+once buradan yap sonra zaten serverlari linux tabanli yapicagin icin gunicorn yaparsin
+ve sonra .env dosyasinida aktarirsin linuxe
