@@ -8,6 +8,7 @@ import netifaces
 from dotenv import load_dotenv
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from redis import Redis
 
 # Load environment variables
 load_dotenv()
@@ -18,8 +19,12 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 # Flask app initialization
 app = Flask(__name__)
 
-# Rate limiting setup
-limiter = Limiter(key_func=get_remote_address, default_limits=["10 per minute"])
+# Redis backend setup for rate limiting
+redis_client = Redis(host='localhost', port=6379, db=0)
+limiter = Limiter(
+    key_func=get_remote_address,
+    storage_uri="redis://localhost:6379"
+)
 limiter.init_app(app)
 
 
