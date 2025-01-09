@@ -20,10 +20,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 app = Flask(__name__)
 
 # Redis backend setup for rate limiting
-redis_client = Redis(host='localhost', port=6379, db=0)
+redis_client = Redis.from_url(os.getenv('REDIS_URL'))
 limiter = Limiter(
     key_func=get_remote_address,
-    storage_uri="redis://localhost:6379"
+    storage_uri= os.getenv('REDIS_URL')
 )
 limiter.init_app(app)
 
